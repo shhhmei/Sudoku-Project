@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# coding:utf-8
+
 """
 Each sudoku board is represented as a dictionary with string keys and
 int values.
@@ -165,17 +168,16 @@ if __name__ == '__main__':
         randPuzzle = random.randint(1, 400)
         currPuzzle = 0
         for line in sudoku_list.split("\n"):
+            currPuzzle += 1
             if len(line) < 9:
                 continue
             if currPuzzle != randPuzzle:
                 continue
-            currPuzle += 1
             
             # Parse boards to dict representation, scanning board L to R, Up to Down
             board = {ROW[r] + COL[c]: int(line[9 * r + c])
                      for r in range(9) for c in range(9)}
 
-            # Print starting board. TODO: Comment this out when timing runs.
             #print_board(board)
 
             start_time = time.time()
@@ -183,7 +185,6 @@ if __name__ == '__main__':
             # Solve with backtracking
             solved_board = backtracking(board)
 
-            # Print solved board. TODO: Comment this out when timing runs.
             #print_board(solved_board)
 
             # Write board to file
