@@ -127,87 +127,64 @@ def backtracking(board):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
+    # Running sudoku solver for boards in sudokus_start.txt $python3 sudoku.py
+    #  Read boards from source.
+    src_filename = 'sudokus_start.txt'
+    try:
+        srcfile = open(src_filename, "r")
+        sudoku_list = srcfile.read()
+    except:
+        print("Error reading the sudoku file %s" % src_filename)
+        exit()
 
-        # Running sudoku solver with one board $python3 sudoku.py <input_string>.
-        # Parse boards to dict representation, scanning board L to R, Up to Down
-        board = {ROW[r] + COL[c]: int(sys.argv[1][9 * r + c])
+    # Setup output file
+    #out_filename = 'output.txt'
+    #outfile = open(out_filename, "w")
+
+    # Solve each board using backtracking
+    randPuzzle = random.randint(1, 400)
+    currPuzzle = 0
+    for line in sudoku_list.split("\n"):
+        currPuzzle += 1
+        if len(line) < 9:
+            continue
+        if currPuzzle != randPuzzle:
+            continue
+        
+        # Change this to read and parse boards to correct dict representation, scanning board L to R, Up to Down
+        board = {ROW[r] + COL[c]: int(line[9 * r + c])
                  for r in range(9) for c in range(9)}
 
-        print_board(board)
+        #print_board(board)
+        
+        #Solve with backtracking
         solved_board = backtracking(board)
+
+        #initialize game here, with solved_board kept track of, but also with current, "playable", board as the one actually shown
+
+        #print_board(solved_board)
+
         # Write board to file
-        out_filename = 'output.txt'
-        outfile = open(out_filename, "w")
+        # outfile.write(board_to_string(solved_board))
+        # outfile.write('\n')
         print_board(solved_board)
-        outfile.write(board_to_string(solved_board))
-        outfile.write('\n')
+        """
+        counter += 1
 
-    else:
-        # Running sudoku solver for boards in sudokus_start.txt $python3 sudoku.py
-        #  Read boards from source.
-        src_filename = 'sudokus_start.txt'
-        try:
-            srcfile = open(src_filename, "r")
-            sudoku_list = srcfile.read()
-        except:
-            print("Error reading the sudoku file %s" % src_filename)
-            exit()
+        if curr > max_time:
+            max_time = curr
 
-        # Setup output file
-        out_filename = 'output.txt'
-        outfile = open(out_filename, "w")
+        if curr < min_time:
+            min_time = curr
 
-        mean = 0
-        min_time = sys.maxsize
-        max_time = 0
-        running_list = []
+        mean += curr
+        running_list.append(curr)
 
-        counter = 0
-        # Solve each board using backtracking
-        randPuzzle = random.randint(1, 400)
-        currPuzzle = 0
-        for line in sudoku_list.split("\n"):
-            currPuzzle += 1
-            if len(line) < 9:
-                continue
-            if currPuzzle != randPuzzle:
-                continue
-            
-            # Parse boards to dict representation, scanning board L to R, Up to Down
-            board = {ROW[r] + COL[c]: int(line[9 * r + c])
-                     for r in range(9) for c in range(9)}
+    print("Max time =", max_time)
+    print("Min time =", min_time)
+    print("Mean time =", mean/counter)
+    print("Standard Deviation =", statistics.stdev(running_list))
 
-            #print_board(board)
-
-            start_time = time.time()
-
-            # Solve with backtracking
-            solved_board = backtracking(board)
-
-            #print_board(solved_board)
-
-            # Write board to file
-            outfile.write(board_to_string(solved_board))
-            outfile.write('\n')
-
-            end_time = time.time()
-            curr = end_time - start_time
-            counter += 1
-
-            if curr > max_time:
-                max_time = curr
-
-            if curr < min_time:
-                min_time = curr
-
-            mean += curr
-            running_list.append(curr)
-
-        #print("Max time =", max_time)
-        #print("Min time =", min_time)
-        #print("Mean time =", mean/counter)
-        #print("Standard Deviation =", statistics.stdev(running_list))
-
-        print("Solved", counter, "puzzles.")
-        #print("Finishing all boards in file.")
+    print("Solved", counter, "puzzles.")
+    print("Finishing all boards in file.")
+    """
