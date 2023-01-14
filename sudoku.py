@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# coding:utf-8
 import sys
 import copy
 import statistics
@@ -7,20 +5,26 @@ import time
 import random
 #import pygame
 
+ROW = "ABCDEFGHI"
+COL = "123456789"
+
 def print_board(board):
     """Helper function to print board in a square."""
     print("-----------------")
-    for i in board:
-        print(i)
+    for i in ROW:
+        row = ''
+        for j in COL:
+            row += (str(board[i + j]) + " ")
+        print(row)
 
-def board_to_string(board):
-    """Helper function to convert board dictionary to string for writing."""
-    ordered_vals = []
-    for r in ROW:
-        for c in COL:
-            ordered_vals.append(str(board[r + c]))
-    return ''.join(ordered_vals)
-
+def convert_board(line):
+    x = 9
+    board = [list(line[y - x:y]) for y in range(x, len(line) + x, x)]
+    grid = []
+    for element in board:
+        res = [eval(i) for i in element]
+        grid.append(res)
+    return grid
 
 def initUnsolved(board):
     unsolved_board = {}
@@ -131,16 +135,14 @@ if __name__ == '__main__':
         currPuzzle += 1
         if currPuzzle != randPuzzle:
             continue
+
+        board = {ROW[r] + COL[c]: int(line[9 * r + c])
+                 for r in range(9) for c in range(9)}
         
-        x = 9
-        board = [list(line[y - x:y]) for y in range(x, len(line) + x, x)]
-        grid = []
-    
-        for element in board:
-            res = [eval(i) for i in element]
-            grid.append(res)
-            
-        print_board(grid)
+        grid = convert_board(line)
+        
+        print(board)
+        print(grid)
         
         #print_board(board)
         
