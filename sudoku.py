@@ -3,7 +3,7 @@ import copy
 import statistics
 import time
 import random
-#import pygame
+import pygame
 
 ROW = "ABCDEFGHI"
 COL = "123456789"
@@ -99,7 +99,7 @@ def backtrack(board, unsolved):
     for value in possible_domain:
         backup_board = copy.deepcopy(board)
         backup_unsolved = copy.deepcopy(unsolved)
-        print_board(backup_board)
+        #print_board(backup_board)
         if checkValid(board, next_val, value):
             board[next_val] = value
             unsolved = updateDomain(next_val, value, unsolved)
@@ -141,15 +141,15 @@ if __name__ == '__main__':
         
         grid = convert_board(line)
         
-        print(board)
-        print(grid)
+        #print(board)
+        #print(grid)
         
-        #print_board(board)
+        print_board(board)
         
-        #solved_board = backtracking(board)
+        solved_board = backtracking(board)
 
         #initialize game here, with solved_board kept track of, but also with current, "playable", board as the one actually shown
 
-        #print_board(solved_board)
+        print_board(solved_board)
 
         
