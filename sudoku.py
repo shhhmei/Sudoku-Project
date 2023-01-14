@@ -1,29 +1,17 @@
 #!/usr/bin/env python
 # coding:utf-8
-
-"""
-Each sudoku board is represented as a dictionary with string keys and
-int values.
-e.g. my_board['A1'] = 8
-"""
 import sys
 import copy
 import statistics
 import time
 import random
-
-ROW = "ABCDEFGHI"
-COL = "123456789"
+#import pygame
 
 def print_board(board):
     """Helper function to print board in a square."""
     print("-----------------")
-    for i in ROW:
-        row = ''
-        for j in COL:
-            row += (str(board[i + j]) + " ")
-        print(row)
-
+    for i in board:
+        print(i)
 
 def board_to_string(board):
     """Helper function to convert board dictionary to string for writing."""
@@ -127,8 +115,7 @@ def backtracking(board):
 
 
 if __name__ == '__main__':
-    # Running sudoku solver for boards in sudokus_start.txt $python3 sudoku.py
-    #  Read boards from source.
+    # Read boards from source.
     src_filename = 'sudokus_start.txt'
     try:
         srcfile = open(src_filename, "r")
@@ -137,54 +124,30 @@ if __name__ == '__main__':
         print("Error reading the sudoku file %s" % src_filename)
         exit()
 
-    # Setup output file
-    #out_filename = 'output.txt'
-    #outfile = open(out_filename, "w")
-
     # Solve each board using backtracking
     randPuzzle = random.randint(1, 400)
     currPuzzle = 0
     for line in sudoku_list.split("\n"):
         currPuzzle += 1
-        if len(line) < 9:
-            continue
         if currPuzzle != randPuzzle:
             continue
         
-        # Change this to read and parse boards to correct dict representation, scanning board L to R, Up to Down
-        board = {ROW[r] + COL[c]: int(line[9 * r + c])
-                 for r in range(9) for c in range(9)}
-
+        x = 9
+        board = [list(line[y - x:y]) for y in range(x, len(line) + x, x)]
+        grid = []
+    
+        for element in board:
+            res = [eval(i) for i in element]
+            grid.append(res)
+            
+        print_board(grid)
+        
         #print_board(board)
         
-        #Solve with backtracking
-        solved_board = backtracking(board)
+        #solved_board = backtracking(board)
 
         #initialize game here, with solved_board kept track of, but also with current, "playable", board as the one actually shown
 
         #print_board(solved_board)
 
-        # Write board to file
-        # outfile.write(board_to_string(solved_board))
-        # outfile.write('\n')
-        print_board(solved_board)
-        """
-        counter += 1
-
-        if curr > max_time:
-            max_time = curr
-
-        if curr < min_time:
-            min_time = curr
-
-        mean += curr
-        running_list.append(curr)
-
-    print("Max time =", max_time)
-    print("Min time =", min_time)
-    print("Mean time =", mean/counter)
-    print("Standard Deviation =", statistics.stdev(running_list))
-
-    print("Solved", counter, "puzzles.")
-    print("Finishing all boards in file.")
-    """
+        
