@@ -209,7 +209,6 @@ def solve(grid, i, j):
             draw()
             draw_box()
             pygame.display.update()
-            pygame.time.delay(20)
             if solve(grid, i, j) == 1:
                 return True
             else:
