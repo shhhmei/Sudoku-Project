@@ -226,7 +226,7 @@ def solve(grid, i, j):
 
 # Display instruction for the game
 def instruction():
-    text1 = font2.render("PRESS D TO RESET TO DEFAULT / R TO EMPTY", 1, (0, 0, 0))
+    text1 = font2.render("PRESS D TO RESET TO DEFAULT", 1, (0, 0, 0))
     text2 = font2.render("ENTER VALUES AND PRESS ENTER TO VISUALIZE", 1, (0, 0, 0))
     screen.blit(text1, (20, 520))
     screen.blit(text2, (20, 540))
@@ -234,7 +234,7 @@ def instruction():
 
 # Display options when solved
 def result():
-    text1 = font1.render("FINISHED PRESS R or D", 1, (0, 0, 0))
+    text1 = font1.render("FINISHED PRESS D", 1, (0, 0, 0))
     screen.blit(text1, (20, 570))
 
 if __name__ == '__main__':
@@ -346,28 +346,12 @@ if __name__ == '__main__':
                         val = 9
                     if event.key == pygame.K_RETURN:
                         flag2 = 1
-                    # If R pressed clear the sudoku board
-                    if event.key == pygame.K_r:
-                        rs = 0
-                        error = 0
-                        flag2 = 0
-                        grid = playable_board
                     # If D is pressed reset the board to default
                     if event.key == pygame.K_d:
                         rs = 0
                         error = 0
                         flag2 = 0
-                        grid = [
-                            [7, 8, 0, 4, 0, 0, 1, 2, 0],
-                            [6, 0, 0, 0, 7, 5, 0, 0, 9],
-                            [0, 0, 0, 6, 0, 1, 0, 7, 8],
-                            [0, 0, 7, 0, 4, 0, 2, 6, 0],
-                            [0, 0, 1, 0, 5, 0, 9, 3, 0],
-                            [9, 0, 4, 0, 6, 0, 0, 0, 5],
-                            [0, 7, 0, 3, 0, 0, 0, 1, 2],
-                            [1, 2, 0, 0, 0, 7, 4, 0, 0],
-                            [0, 4, 9, 2, 0, 6, 0, 0, 7]
-                        ]
+                        grid = playable_board
             if flag2 == 1:
                 if solve(grid, 0, 0) == False:
                     error = 1
