@@ -4,6 +4,7 @@ import statistics
 import time
 import random
 import pygame
+import numpy as np
 
 ROW = "ABCDEFGHI"
 COL = "123456789"
@@ -24,7 +25,9 @@ def convert_board(line):
     for element in board:
         res = [eval(i) for i in element]
         grid.append(res)
-    return grid
+    toReturn = np.asarray(grid)
+    toReturn = toReturn.transpose()
+    return toReturn
 
 def initUnsolved(board):
     unsolved_board = {}
@@ -258,7 +261,7 @@ if __name__ == '__main__':
                  for r in range(9) for c in range(9)}
         
         playable_board = convert_board(line)
-        grid = playable_board
+        grid = playable_board.copy()
         #print(board)
         #print(grid)
         
