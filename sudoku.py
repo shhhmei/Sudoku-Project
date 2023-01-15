@@ -18,11 +18,14 @@ def print_board(board):
             row += (str(board[i + j]) + " ")
         print(row)
 
-def convert_board(line):
+def convert_board(board):
     x = 9
-    board = [list(line[y - x:y]) for y in range(x, len(line) + x, x)]
+    line = ""
+    for val in board:
+        line += str(board[val])
+    temp = [list(line[y - x:y]) for y in range(x, len(line) + x, x)]
     grid = []
-    for element in board:
+    for element in temp:
         res = [eval(i) for i in element]
         grid.append(res)
     toReturn = np.asarray(grid)
@@ -260,7 +263,7 @@ if __name__ == '__main__':
         initial_board = {ROW[r] + COL[c]: int(line[9 * r + c])
                  for r in range(9) for c in range(9)}
         
-        playable_board = convert_board(line)
+        playable_board = convert_board(initial_board)
         grid = playable_board.copy()
         #print(board)
         #print(grid)
