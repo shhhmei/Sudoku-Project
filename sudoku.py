@@ -138,7 +138,7 @@ def backtrack(board, unsolved):
             board[next_val] = value
             pygame.time.delay(5)
             global grid
-            grid = convert_board(backup_board)
+            grid = convert_board(board)
             unsolved = updateDomain(next_val, value, unsolved)
             if isValidDomain(unsolved):
                 valid_board = backtrack(board, unsolved)
