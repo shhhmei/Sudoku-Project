@@ -132,11 +132,11 @@ def backtrack(board, unsolved):
         draw()
         draw_box()
         pygame.display.update()
-        pygame.time.delay(10)
+        pygame.time.delay(5)
 
         if checkValid(board, next_val, value):
             board[next_val] = value
-            pygame.time.delay(5)
+            #pygame.time.delay(5)
             global grid
             grid = convert_board(board)
             unsolved = updateDomain(next_val, value, unsolved)
@@ -231,44 +231,6 @@ def valid(m, i, j, val):
             if m[i][j] == val:
                 return False
     return True
-
-
-# Dumb Backtracking algorithm
-"""
-def solve(grid, i, j):
-    while grid[i][j] != 0:
-        if i < 8:
-            i += 1
-        elif i == 8 and j < 8:
-            i = 0
-            j += 1
-        elif i == 8 and j == 8:
-            return True
-    pygame.event.pump()
-    for it in range(1, 10):
-        if valid(grid, i, j, it) == True:
-            grid[i][j] = it
-            global x, y
-            x = i
-            y = j
-            # white color background\
-            screen.fill((255, 255, 255))
-            draw()
-            draw_box()
-            pygame.display.update()
-            if solve(grid, i, j) == 1:
-                return True
-            else:
-                grid[i][j] = 0
-            # white color background\
-            screen.fill((255, 255, 255))
-
-            draw()
-            draw_box()
-            pygame.display.update()
-            pygame.time.delay(50)
-    return False
-"""
 
 
 # Display instruction for the game
