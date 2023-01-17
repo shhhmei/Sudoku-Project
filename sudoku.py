@@ -19,15 +19,17 @@ def print_board(board):
         print(row)
 
 def convert_board(board):
-    x = 9
-    line = ""
-    for val in board:
-        line += str(board[val])
-    temp = [list(line[y - x:y]) for y in range(x, len(line) + x, x)]
+    x = 0
+    temp = []
     grid = []
-    for element in temp:
-        res = [eval(i) for i in element]
-        grid.append(res)
+    for element in board:
+        if x == 9:
+            x = 0
+            grid.append(temp)
+            temp = []
+        x += 1
+        temp.append(board[element])
+    grid.append(temp)
     toReturn = np.asarray(grid)
     toReturn = toReturn.transpose()
     return toReturn
