@@ -9,6 +9,7 @@ import numpy as np
 ROW = "ABCDEFGHI"
 COL = "123456789"
 
+
 def print_board(board):
     """Helper function to print board in a square."""
     print("-----------------")
@@ -17,6 +18,22 @@ def print_board(board):
         for j in COL:
             row += (str(board[i + j]) + " ")
         print(row)
+
+
+def convert_grid(grid):
+    grid = np.flip(grid)
+    grid = grid.transpose()
+    unpackaged = []
+    board = {}
+    for row in grid:
+        for element in row:
+            unpackaged.append(element)
+    for i in ROW:
+        for j in COL:
+            board[i+j] = unpackaged.pop()
+    print_board(board)
+    return board
+
 
 def convert_board(board):
     x = 0
@@ -33,6 +50,7 @@ def convert_board(board):
     toReturn = np.asarray(grid)
     toReturn = toReturn.transpose()
     return toReturn
+
 
 def initUnsolved(board):
     unsolved_board = {}
@@ -99,31 +117,45 @@ def selectNext(unsolved_board):
 
 def backtrack(board, unsolved):
     if len(unsolved) == 0:
-        return board
+        return True
     next_val = selectNext(unsolved)
     possible_domain = unsolved[next_val]
-
+    pygame.event.pump()
+    
     del unsolved[next_val]
     for value in possible_domain:
         backup_board = copy.deepcopy(board)
         backup_unsolved = copy.deepcopy(unsolved)
-        #print_board(backup_board)
+        # print_board(backup_board)
+        # white color background
+        screen.fill((255, 255, 255))
+        draw()
+        draw_box()
+        pygame.display.update()
+
         if checkValid(board, next_val, value):
             board[next_val] = value
             unsolved = updateDomain(next_val, value, unsolved)
             if isValidDomain(unsolved):
-                result = backtrack(board, unsolved)
-                if result != []:
-                    return result
+                valid_board = backtrack(board, unsolved)
+                if valid_board is True:
+                    return True
         board = backup_board
         unsolved = backup_unsolved
-    return []
+
+    screen.fill((255, 255, 255))
+    draw()
+    draw_box()
+    pygame.display.update()
+    pygame.time.delay(50)
+    return False
 
 
-def backtracking(board):
+def solve(board):
     unsolved_board = initUnsolved(board)
-    solved_board = backtrack(board, unsolved_board)
-    return solved_board
+    solvable = backtrack(board, unsolved_board)
+    return solvable
+
 
 def get_cord(pos):
     global x
@@ -195,7 +227,8 @@ def valid(m, i, j, val):
     return True
 
 
-# Solves the sudoku board using Backtracking Algorithm
+# Dumb Backtracking algorithm
+"""
 def solve(grid, i, j):
     while grid[i][j] != 0:
         if i < 8:
@@ -229,6 +262,7 @@ def solve(grid, i, j):
             pygame.display.update()
             pygame.time.delay(50)
     return False
+"""
 
 
 # Display instruction for the game
@@ -243,6 +277,7 @@ def instruction():
 def result():
     text1 = font1.render("FINISHED PRESS D", 1, (0, 0, 0))
     screen.blit(text1, (20, 570))
+
 
 if __name__ == '__main__':
     # Read boards from source.
@@ -263,17 +298,17 @@ if __name__ == '__main__':
             continue
 
         initial_board = {ROW[r] + COL[c]: int(line[9 * r + c])
-                 for r in range(9) for c in range(9)}
-        
+                         for r in range(9) for c in range(9)}
+
         playable_board = convert_board(initial_board)
         grid = playable_board.copy()
-        #print(board)
-        #print(grid)
-        
+        # print(board)
+        # print(grid)
+
         print_board(initial_board)
-        solved_board = backtracking(initial_board)
-        print_board(solved_board)
-        #initialize game here, with solved_board kept track of, but also with current, "playable", board as the one actually shown
+        #solved_board = solve(initial_board)
+        #print_board(solved_board)
+        # initialize game here, with solved_board kept track of, but also with current, "playable", board as the one actually shown
 
         # initialise the pygame font
         pygame.font.init()
@@ -292,12 +327,12 @@ if __name__ == '__main__':
         y = 0
         dif = x_size / 9
         val = 0
-        
+
         # Load fonts
         font1 = pygame.font.SysFont("comicsans", 28)
         font2 = pygame.font.SysFont("comicsans", 20)
-        
-        #print_board(solved_board)
+
+        # print_board(solved_board)
 
         run = True
         flag1 = 0
@@ -360,7 +395,8 @@ if __name__ == '__main__':
                         flag2 = 0
                         grid = playable_board
             if flag2 == 1:
-                if solve(grid, 0, 0) == False:
+                solvable_board = convert_grid(grid)
+                if solve(solvable_board) == False:
                     error = 1
                 else:
                     rs = 1
