@@ -20,12 +20,12 @@ def print_board(board):
         print(row)
 
 
-def convert_grid(grid):
-    grid = np.flip(grid)
-    grid = grid.transpose()
+def convert_arr(arr):
+    arr = np.flip(arr)
+    arr = arr.transpose()
     unpackaged = []
     board = {}
-    for row in grid:
+    for row in arr:
         for element in row:
             unpackaged.append(element)
     for i in ROW:
@@ -38,16 +38,16 @@ def convert_grid(grid):
 def convert_board(board):
     x = 0
     temp = []
-    grid = []
+    arr = []
     for element in board:
         if x == 9:
             x = 0
-            grid.append(temp)
+            arr.append(temp)
             temp = []
         x += 1
         temp.append(board[element])
-    grid.append(temp)
-    toReturn = np.asarray(grid)
+    arr.append(temp)
+    toReturn = np.asarray(arr)
     toReturn = toReturn.transpose()
     return toReturn
 
@@ -126,7 +126,7 @@ def backtrack(board, unsolved):
     for value in possible_domain:
         backup_board = copy.deepcopy(board)
         backup_unsolved = copy.deepcopy(unsolved)
-        # print_board(backup_board)
+        print_board(backup_board)
         # white color background
         screen.fill((255, 255, 255))
         draw()
@@ -301,6 +301,7 @@ if __name__ == '__main__':
                          for r in range(9) for c in range(9)}
 
         playable_board = convert_board(initial_board)
+        global grid
         grid = playable_board.copy()
         # print(board)
         # print(grid)
@@ -395,7 +396,7 @@ if __name__ == '__main__':
                         flag2 = 0
                         grid = playable_board
             if flag2 == 1:
-                solvable_board = convert_grid(grid)
+                solvable_board = convert_arr(grid)
                 if solve(solvable_board) == False:
                     error = 1
                 else:
