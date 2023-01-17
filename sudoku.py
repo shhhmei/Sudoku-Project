@@ -132,11 +132,10 @@ def backtrack(board, unsolved):
         draw()
         draw_box()
         pygame.display.update()
-        pygame.time.delay(5)
 
         if checkValid(board, next_val, value):
             board[next_val] = value
-            #pygame.time.delay(5)
+            pygame.time.delay(10)
             global grid
             grid = convert_board(board)
             unsolved = updateDomain(next_val, value, unsolved)
