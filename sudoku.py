@@ -179,12 +179,21 @@ def draw_box():
 # Function to draw required lines for making Sudoku grid
 def draw():
     # Draw the lines
+    for i in range(9):
+        for j in range(9):
+            if start_grid[i][j] != 0:
+                # Fill blue color in already numbered grid
+                pygame.draw.rect(screen, (0, 153, 153), (i * dif, j * dif, dif + 1, dif + 1))
+
+                # Fill grid with default numbers specified
+                text1 = font1.render(str(grid[i][j]), 1, (0, 0, 0))
+                screen.blit(text1, (i * dif + 15, j * dif + 15))
 
     for i in range(9):
         for j in range(9):
-            if grid[i][j] != 0:
+            if grid[i][j] != 0 and start_grid[i][j] == 0:
                 # Fill blue color in already numbered grid
-                pygame.draw.rect(screen, (0, 153, 153), (i * dif, j * dif, dif + 1, dif + 1))
+                pygame.draw.rect(screen, (137, 207, 240), (i * dif, j * dif, dif + 1, dif + 1))
 
                 # Fill grid with default numbers specified
                 text1 = font1.render(str(grid[i][j]), 1, (0, 0, 0))
@@ -269,7 +278,9 @@ if __name__ == '__main__':
 
         playable_board = convert_board(initial_board)
         global grid
+        global start_grid
         grid = playable_board.copy()
+        start_grid = playable_board.copy()
         # print(board)
         # print(grid)
 
@@ -297,8 +308,8 @@ if __name__ == '__main__':
         val = 0
 
         # Load fonts
-        font1 = pygame.font.SysFont("comicsans", 28)
-        font2 = pygame.font.SysFont("comicsans", 20)
+        font1 = pygame.font.SysFont("arial", 28)
+        font2 = pygame.font.SysFont("arial", 20)
 
         # print_board(solved_board)
 
