@@ -31,7 +31,6 @@ def convert_arr(arr):
     for i in ROW:
         for j in COL:
             board[i+j] = unpackaged.pop()
-    print_board(board)
     return board
 
 
@@ -126,7 +125,6 @@ def backtrack(board, unsolved):
     for value in possible_domain:
         backup_board = copy.deepcopy(board)
         backup_unsolved = copy.deepcopy(unsolved)
-        print_board(backup_board)
         # white color background
         screen.fill((255, 255, 255))
         draw()
@@ -135,7 +133,7 @@ def backtrack(board, unsolved):
 
         if checkValid(board, next_val, value):
             board[next_val] = value
-            pygame.time.delay(10)
+            pygame.time.delay(5)
             global grid
             grid = convert_board(board)
             unsolved = updateDomain(next_val, value, unsolved)
@@ -284,7 +282,6 @@ if __name__ == '__main__':
         # print(board)
         # print(grid)
 
-        print_board(initial_board)
         #solved_board = solve(initial_board)
         #print_board(solved_board)
         # initialize game here, with solved_board kept track of, but also with current, "playable", board as the one actually shown
