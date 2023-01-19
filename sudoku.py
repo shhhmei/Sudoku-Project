@@ -115,7 +115,6 @@ def selectNext(unsolved_board):
 
 
 def backtrack(board, unsolved):
-    solve_text()
     if len(unsolved) == 0:
         return True
     next_val = selectNext(unsolved)
@@ -129,7 +128,7 @@ def backtrack(board, unsolved):
         # white color background
         screen.fill((255, 255, 255))
         draw()
-        draw_box()
+        solve_text()
         pygame.display.update()
 
         if checkValid(board, next_val, value):
@@ -148,9 +147,9 @@ def backtrack(board, unsolved):
     grid = convert_board(backup_board)
     screen.fill((255, 255, 255))
     draw()
-    draw_box()
+    solve_text()
     pygame.display.update()
-    pygame.time.delay(30)
+    pygame.time.delay(15)
     return False
 
 
@@ -367,12 +366,14 @@ if __name__ == '__main__':
                         val = 9
                     if event.key == pygame.K_RETURN:
                         flag2 = 1
+                        flag1 = 0
                     # If D is pressed reset the board to default
                     if event.key == pygame.K_d:
                         rs = 0
                         error = 0
                         flag2 = 0
                         grid = playable_board
+                        playable_board = playable_board.copy()
             if flag2 == 1:
                 solvable_board = convert_arr(grid)
                 if solve(solvable_board) == False:
