@@ -115,6 +115,7 @@ def selectNext(unsolved_board):
 
 
 def backtrack(board, unsolved):
+    solve_text()
     if len(unsolved) == 0:
         return True
     next_val = selectNext(unsolved)
@@ -143,7 +144,6 @@ def backtrack(board, unsolved):
                     return True
         board = backup_board
         unsolved = backup_unsolved
-
     pygame.time.delay(5)
     grid = convert_board(backup_board)
     screen.fill((255, 255, 255))
@@ -246,6 +246,9 @@ def instruction():
     screen.blit(text1, (20, 520))
     screen.blit(text2, (20, 540))
 
+def solve_text():
+    text3 = font2.render("Solving...", 1, (0, 0, 0))
+    screen.blit(text3, (20, 520))
 
 # Display options when solved
 def result():
