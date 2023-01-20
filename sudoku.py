@@ -214,7 +214,10 @@ def draw_val(val):
 # Raise error when wrong value entered
 def raise_error1():
     text1 = font1.render("WRONG !!!", 1, (0, 0, 0))
-    screen.blit(text1, (20, 570))
+    text2 = font2.render("PRESS D TO RETRY", 1, (0, 0, 0))
+    screen.blit(text1, (20, 520))
+    screen.blit(text2, (20, 560))
+    screen.blit(text3, (20, 580))
 
 
 def raise_error2():
@@ -254,7 +257,7 @@ def solve_text():
 # Display options when solved
 def result():
     text1 = font1.render("SUCCESS!", 1, (0, 0, 0))
-    text2 = font2.render("PRESS D TO RETRY OR PRESS F FOR NEW BOARD", 1, (0, 0, 0))
+    text2 = font2.render("PRESS D TO RETRY OR F FOR A NEW BOARD", 1, (0, 0, 0))
     screen.blit(text1, (20, 520))
     screen.blit(text2, (20, 560))
 
@@ -282,7 +285,7 @@ if __name__ == '__main__':
 
     # Total window
     x_size = 500
-    y_size = 600
+    y_size = 625
     screen = pygame.display.set_mode((x_size, y_size))
 
     # Title and Icon
@@ -414,7 +417,7 @@ if __name__ == '__main__':
         draw()
         if flag1 == 1:
             draw_box()
-        if rs != 1:
+        if rs != 1 and error != 1:
             instruction()
 
         # Update window
