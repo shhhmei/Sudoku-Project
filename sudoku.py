@@ -241,9 +241,11 @@ def valid(m, i, j, val):
 # Display instruction for the game
 def instruction():
     text1 = font2.render("PRESS D TO RESET TO DEFAULT", 1, (0, 0, 0))
-    text2 = font2.render("ENTER VALUES AND PRESS ENTER TO VISUALIZE", 1, (0, 0, 0))
+    text2 = font2.render("PRESS F TO TRY NEW BOARD", 1, (0, 0, 0))
+    text3 = font2.render("ENTER VALUES OR PRESS ENTER TO SOLVE", 1, (0, 0, 0))
     screen.blit(text1, (20, 520))
     screen.blit(text2, (20, 540))
+    screen.blit(text3, (20, 560))
 
 def solve_text():
     text3 = font2.render("Solving...", 1, (0, 0, 0))
@@ -251,9 +253,10 @@ def solve_text():
 
 # Display options when solved
 def result():
-    text1 = font1.render("FINISHED PRESS D", 1, (0, 0, 0))
-    screen.blit(text1, (20, 570))
-
+    text1 = font1.render("SUCCESS!", 1, (0, 0, 0))
+    text2 = font2.render("PRESS D TO RETRY OR PRESS F FOR NEW BOARD", 1, (0, 0, 0))
+    screen.blit(text1, (20, 520))
+    screen.blit(text2, (20, 560))
 
 if __name__ == '__main__':
     # Read boards from source.
@@ -268,143 +271,154 @@ if __name__ == '__main__':
     # Solve each board using backtracking
     randPuzzle = random.randint(1, 400)
     currPuzzle = 0
-    for line in sudoku_list.split("\n"):
-        currPuzzle += 1
-        if currPuzzle != randPuzzle:
-            continue
+    puzzle_list = sudoku_list.split("\n")
 
-        initial_board = {ROW[r] + COL[c]: int(line[9 * r + c])
-                         for r in range(9) for c in range(9)}
+    # solved_board = solve(initial_board)
+    # print_board(solved_board)
+    # initialize game here, with solved_board kept track of, but also with current, "playable", board as the one actually shown
 
-        playable_board = convert_board(initial_board)
-        global grid
-        global start_grid
-        grid = playable_board.copy()
-        start_grid = playable_board.copy()
-        # print(board)
-        # print(grid)
+    # initialise the pygame font
+    pygame.font.init()
 
-        #solved_board = solve(initial_board)
-        #print_board(solved_board)
-        # initialize game here, with solved_board kept track of, but also with current, "playable", board as the one actually shown
+    # Total window
+    x_size = 500
+    y_size = 600
+    screen = pygame.display.set_mode((x_size, y_size))
 
-        # initialise the pygame font
-        pygame.font.init()
+    # Title and Icon
+    pygame.display.set_caption("SUDOKU SOLVER USING BACKTRACKING")
+    # img = pygame.image.load('icon.png')
+    # pygame.display.set_icon(img)
 
-        # Total window
-        x_size = 500
-        y_size = 600
-        screen = pygame.display.set_mode((x_size, y_size))
+    x = 0
+    y = 0
+    dif = x_size / 9
+    val = 0
 
-        # Title and Icon
-        pygame.display.set_caption("SUDOKU SOLVER USING BACKTRACKING")
-        # img = pygame.image.load('icon.png')
-        # pygame.display.set_icon(img)
+    # Load fonts
+    font1 = pygame.font.SysFont("arial", 28)
+    font2 = pygame.font.SysFont("arial", 20)
 
-        x = 0
-        y = 0
-        dif = x_size / 9
-        val = 0
+    # print_board(solved_board)
 
-        # Load fonts
-        font1 = pygame.font.SysFont("arial", 28)
-        font2 = pygame.font.SysFont("arial", 20)
+    run = True
+    flag1 = 0
+    flag2 = 0
+    rs = 0
+    error = 0
+    global grid
+    global start_grid
+    # The loop thats keep the window running
 
-        # print_board(solved_board)
+    line = puzzle_list[randPuzzle]
+    initial_board = {ROW[r] + COL[c]: int(line[9 * r + c])
+                     for r in range(9) for c in range(9)}
 
-        run = True
-        flag1 = 0
-        flag2 = 0
-        rs = 0
-        error = 0
-        # The loop thats keep the window running
-        while run:
+    playable_board = convert_board(initial_board)
+    grid = playable_board.copy()
+    start_grid = playable_board.copy()
 
-            # White color background
-            screen.fill((255, 255, 255))
-            # Loop through the events stored in event.get()
-            for event in pygame.event.get():
-                # Quit the game window
-                if event.type == pygame.QUIT:
-                    run = False
-                # Get the mouse position to insert number
-                if event.type == pygame.MOUSEBUTTONDOWN:
+    while run:
+
+        # White color background
+        screen.fill((255, 255, 255))
+        # Loop through the events stored in event.get()
+        for event in pygame.event.get():
+            # Quit the game window
+            if event.type == pygame.QUIT:
+                run = False
+            # Get the mouse position to insert number
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                flag1 = 1
+                pos = pygame.mouse.get_pos()
+                get_cord(pos)
+            # Get the number to be inserted if key pressed
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    x -= 1
                     flag1 = 1
-                    pos = pygame.mouse.get_pos()
-                    get_cord(pos)
-                # Get the number to be inserted if key pressed
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
-                        x -= 1
-                        flag1 = 1
-                    if event.key == pygame.K_RIGHT:
-                        x += 1
-                        flag1 = 1
-                    if event.key == pygame.K_UP:
-                        y -= 1
-                        flag1 = 1
-                    if event.key == pygame.K_DOWN:
-                        y += 1
-                        flag1 = 1
-                    if event.key == pygame.K_1:
-                        val = 1
-                    if event.key == pygame.K_2:
-                        val = 2
-                    if event.key == pygame.K_3:
-                        val = 3
-                    if event.key == pygame.K_4:
-                        val = 4
-                    if event.key == pygame.K_5:
-                        val = 5
-                    if event.key == pygame.K_6:
-                        val = 6
-                    if event.key == pygame.K_7:
-                        val = 7
-                    if event.key == pygame.K_8:
-                        val = 8
-                    if event.key == pygame.K_9:
-                        val = 9
-                    if event.key == pygame.K_RETURN:
-                        flag2 = 1
-                        flag1 = 0
-                    # If D is pressed reset the board to default
-                    if event.key == pygame.K_d:
-                        rs = 0
-                        error = 0
-                        flag2 = 0
-                        grid = playable_board
-                        playable_board = playable_board.copy()
-            if flag2 == 1:
-                solvable_board = convert_arr(grid)
-                if solve(solvable_board) == False:
-                    error = 1
-                else:
-                    rs = 1
-                flag2 = 0
-            if val != 0:
-                draw_val(val)
-                # print(x)
-                # print(y)
-                if valid(grid, int(x), int(y), val) == True:
-                    grid[int(x)][int(y)] = val
+                if event.key == pygame.K_RIGHT:
+                    x += 1
+                    flag1 = 1
+                if event.key == pygame.K_UP:
+                    y -= 1
+                    flag1 = 1
+                if event.key == pygame.K_DOWN:
+                    y += 1
+                    flag1 = 1
+                if event.key == pygame.K_1:
+                    val = 1
+                if event.key == pygame.K_2:
+                    val = 2
+                if event.key == pygame.K_3:
+                    val = 3
+                if event.key == pygame.K_4:
+                    val = 4
+                if event.key == pygame.K_5:
+                    val = 5
+                if event.key == pygame.K_6:
+                    val = 6
+                if event.key == pygame.K_7:
+                    val = 7
+                if event.key == pygame.K_8:
+                    val = 8
+                if event.key == pygame.K_9:
+                    val = 9
+                if event.key == pygame.K_RETURN:
+                    flag2 = 1
                     flag1 = 0
-                else:
-                    grid[int(x)][int(y)] = 0
-                    raise_error2()
-                val = 0
+                # If D is pressed reset the board to default
+                if event.key == pygame.K_d:
+                    rs = 0
+                    error = 0
+                    flag2 = 0
+                    grid = playable_board
+                    playable_board = playable_board.copy()
+                if event.key == pygame.K_f:
+                    rs = 0
+                    error = 0
+                    flag2 = 0
+                    randPuzzle = random.randint(1, 400)
+                    line = puzzle_list[randPuzzle]
+                    initial_board = {ROW[r] + COL[c]: int(line[9 * r + c])
+                                     for r in range(9) for c in range(9)}
 
-            if error == 1:
-                raise_error1()
-            if rs == 1:
-                result()
-            draw()
-            if flag1 == 1:
-                draw_box()
+                    playable_board = convert_board(initial_board)
+                    grid = playable_board.copy()
+                    start_grid = playable_board.copy()
+                    continue
+        if flag2 == 1:
+            solvable_board = convert_arr(grid)
+            if solve(solvable_board) == False:
+                error = 1
+            else:
+                rs = 1
+            flag2 = 0
+        if val != 0:
+            draw_val(val)
+            # print(x)
+            # print(y)
+            if valid(grid, int(x), int(y), val) == True:
+                grid[int(x)][int(y)] = val
+                flag1 = 0
+            else:
+                grid[int(x)][int(y)] = 0
+                raise_error2()
+            val = 0
+
+        if error == 1:
+            raise_error1()
+        if rs == 1:
+            screen.fill((255, 255, 255))
+            result()
+        draw()
+        if flag1 == 1:
+            draw_box()
+        if rs != 1:
             instruction()
 
-            # Update window
-            pygame.display.update()
+        # Update window
+        pygame.display.update()
 
-        # Quit pygame window
-        pygame.quit()
-    print()
+    # Quit pygame window
+    pygame.quit()
