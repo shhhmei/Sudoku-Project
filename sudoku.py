@@ -276,10 +276,6 @@ if __name__ == '__main__':
     currPuzzle = 0
     puzzle_list = sudoku_list.split("\n")
 
-    # solved_board = solve(initial_board)
-    # print_board(solved_board)
-    # initialize game here, with solved_board kept track of, but also with current, "playable", board as the one actually shown
-
     # initialise the pygame font
     pygame.font.init()
 
@@ -290,9 +286,6 @@ if __name__ == '__main__':
 
     # Title and Icon
     pygame.display.set_caption("SUDOKU SOLVER USING BACKTRACKING")
-    # img = pygame.image.load('icon.png')
-    # pygame.display.set_icon(img)
-
     x = 0
     y = 0
     dif = x_size / 9
@@ -311,16 +304,14 @@ if __name__ == '__main__':
     error = 0
     global grid
     global start_grid
-    # The loop thats keep the window running
+    grid = playable_board.copy()
+    start_grid = playable_board.copy()
 
     line = puzzle_list[randPuzzle]
     initial_board = {ROW[r] + COL[c]: int(line[9 * r + c])
                      for r in range(9) for c in range(9)}
 
     playable_board = convert_board(initial_board)
-    grid = playable_board.copy()
-    start_grid = playable_board.copy()
-
     while run:
 
         # White color background
