@@ -250,9 +250,11 @@ def instruction():
     screen.blit(text2, (20, 545))
     screen.blit(text3, (20, 570))
 
+
 def solve_text():
     text3 = font2.render("Solving...", 1, (0, 0, 0))
     screen.blit(text3, (20, 520))
+
 
 # Display options when solved
 def result():
@@ -260,6 +262,7 @@ def result():
     text2 = font2.render("Press D to RETRY or Press F for a NEW BOARD", 1, (0, 0, 0))
     screen.blit(text1, (20, 520))
     screen.blit(text2, (20, 560))
+
 
 if __name__ == '__main__':
     # Read boards from source.
