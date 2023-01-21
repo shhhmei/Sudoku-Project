@@ -243,12 +243,12 @@ def valid(m, i, j, val):
 
 # Display instruction for the game
 def instruction():
-    text1 = font2.render("PRESS D TO RESET TO DEFAULT", 1, (0, 0, 0))
-    text2 = font2.render("PRESS F TO TRY NEW BOARD", 1, (0, 0, 0))
-    text3 = font2.render("ENTER VALUES OR PRESS ENTER TO SOLVE", 1, (0, 0, 0))
+    text1 = font2.render("Press D to RESET TO DEFAULT", 1, (0, 0, 0))
+    text2 = font2.render("Press F to TRY NEW BOARD", 1, (0, 0, 0))
+    text3 = font2.render("ENTER VALUES or press ENTER TO SOLVE", 1, (0, 0, 0))
     screen.blit(text1, (20, 520))
-    screen.blit(text2, (20, 540))
-    screen.blit(text3, (20, 560))
+    screen.blit(text2, (20, 545))
+    screen.blit(text3, (20, 570))
 
 def solve_text():
     text3 = font2.render("Solving...", 1, (0, 0, 0))
@@ -257,7 +257,7 @@ def solve_text():
 # Display options when solved
 def result():
     text1 = font1.render("SUCCESS!", 1, (0, 0, 0))
-    text2 = font2.render("PRESS D TO RETRY OR F FOR A NEW BOARD", 1, (0, 0, 0))
+    text2 = font2.render("Press D to RETRY or Press F for a NEW BOARD", 1, (0, 0, 0))
     screen.blit(text1, (20, 520))
     screen.blit(text2, (20, 560))
 
@@ -281,7 +281,7 @@ if __name__ == '__main__':
 
     # Total window
     x_size = 500
-    y_size = 625
+    y_size = 610
     screen = pygame.display.set_mode((x_size, y_size))
 
     # Title and Icon
@@ -295,7 +295,11 @@ if __name__ == '__main__':
     font1 = pygame.font.SysFont("arial", 28)
     font2 = pygame.font.SysFont("arial", 20)
 
-    # print_board(solved_board)
+    line = puzzle_list[randPuzzle]
+    initial_board = {ROW[r] + COL[c]: int(line[9 * r + c])
+                     for r in range(9) for c in range(9)}
+
+    playable_board = convert_board(initial_board)
 
     run = True
     flag1 = 0
@@ -306,12 +310,6 @@ if __name__ == '__main__':
     global start_grid
     grid = playable_board.copy()
     start_grid = playable_board.copy()
-
-    line = puzzle_list[randPuzzle]
-    initial_board = {ROW[r] + COL[c]: int(line[9 * r + c])
-                     for r in range(9) for c in range(9)}
-
-    playable_board = convert_board(initial_board)
     while run:
 
         # White color background
